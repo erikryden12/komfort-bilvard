@@ -68,10 +68,6 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30">
-        <span className="text-xs tracking-widest uppercase font-mono">Scrolla</span>
-        <div className="w-px h-16 bg-gradient-to-b from-gold/50 to-transparent animate-pulse" />
-      </div>
     </section>
   );
 }
