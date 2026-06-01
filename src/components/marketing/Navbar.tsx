@@ -14,8 +14,8 @@ export default function Navbar() {
         </div>
 
         <ul className="hidden md:flex gap-8 text-sm text-white/60 tracking-widest uppercase">
-          <li><a href="#tjanster" className="hover:text-gold transition-colors">Tjänster</a></li>
-          <li><a href="#om" className="hover:text-gold transition-colors">Om oss</a></li>
+          <li><a href="/#tjanster" className="hover:text-gold transition-colors">Tjänster</a></li>
+          <li><a href="/#om" className="hover:text-gold transition-colors">Om oss</a></li>
           <li><a href="/kontakt" className="hover:text-gold transition-colors">Kontakt</a></li>
         </ul>
 
@@ -41,8 +41,8 @@ export default function Navbar() {
 
       {open && (
         <div className="md:hidden bg-surface-2 border-t border-gold/10 px-8 py-6 flex flex-col gap-6">
-          <a href="#tjanster" onClick={() => setOpen(false)} className="text-white/70 tracking-widest uppercase text-sm hover:text-gold transition-colors">Tjänster</a>
-          <a href="#om" onClick={() => setOpen(false)} className="text-white/70 tracking-widest uppercase text-sm hover:text-gold transition-colors">Om oss</a>
+          <a href="/#tjanster" onClick={() => setOpen(false)} className="text-white/70 tracking-widest uppercase text-sm hover:text-gold transition-colors">Tjänster</a>
+          <a href="/#om" onClick={() => setOpen(false)} className="text-white/70 tracking-widest uppercase text-sm hover:text-gold transition-colors">Om oss</a>
           <a href="/kontakt" onClick={() => setOpen(false)} className="text-white/70 tracking-widest uppercase text-sm hover:text-gold transition-colors">Kontakt</a>
           <a
             href="tel:0761943519"
