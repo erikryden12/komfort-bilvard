@@ -57,24 +57,32 @@ export default function Kontakt() {
         {/* Top row: contact cards + form */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           {/* Contact cards */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {contactInfo.map((c, i) => {
               const inner = (
-                <div className="flex items-start gap-4 p-5 border border-white/8 bg-white/3 group-hover:border-gold/40 group-hover:bg-gold/5 transition-all duration-300">
-                  <div className="text-gold mt-0.5 shrink-0 group-hover:scale-110 transition-transform duration-300">{c.icon}</div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-gold/60 text-[10px] tracking-[0.3em] uppercase font-mono mb-1">{c.label}</p>
-                    <p className="text-white font-semibold text-base leading-snug">{c.value}</p>
+                <div className="relative overflow-hidden flex items-center gap-6 p-7 border border-white/8 bg-white/[0.03] group-hover:border-gold/50 group-hover:bg-gold/[0.06] transition-all duration-400">
+                  {/* Large faded icon background */}
+                  <div className="absolute right-5 top-1/2 -translate-y-1/2 text-white/[0.04] group-hover:text-gold/10 transition-colors duration-400 pointer-events-none">
+                    <div className="w-20 h-20 [&>svg]:w-full [&>svg]:h-full">{c.icon}</div>
                   </div>
-                  {c.cta && (
-                    <span className="text-gold/0 group-hover:text-gold text-xs tracking-widest uppercase font-mono transition-all duration-300 shrink-0 mt-1">
-                      {c.cta} →
-                    </span>
-                  )}
+                  {/* Icon circle */}
+                  <div className="shrink-0 w-12 h-12 border border-gold/30 bg-gold/10 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-black group-hover:border-gold transition-all duration-300">
+                    {c.icon}
+                  </div>
+                  {/* Text */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-gold/50 text-[10px] tracking-[0.35em] uppercase font-mono mb-1.5">{c.label}</p>
+                    <p className="text-white text-lg font-bold tracking-tight leading-tight">{c.value}</p>
+                    {c.cta && (
+                      <p className="text-gold/0 group-hover:text-gold/70 text-[11px] tracking-widest uppercase font-mono mt-1.5 transition-all duration-300">
+                        {c.cta} →
+                      </p>
+                    )}
+                  </div>
                 </div>
               );
               return (
-                <FadeIn key={c.label} delay={i * 0.07}>
+                <FadeIn key={c.label} delay={i * 0.08}>
                   {c.href ? (
                     <a href={c.href} className="group block">{inner}</a>
                   ) : (
