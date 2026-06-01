@@ -32,7 +32,7 @@ export const tjanster: Tjanst[] = [
       "Höjer bilens andrahandsvärde markant",
       "Vi använder enbart professionella produkter av hög kvalitet",
       "Aldrig automattvättar – handarbete hela vägen",
-      "Över 10 års erfarenhet av bilvård i Örebro",
+      "2 års erfarenhet med hundratals bilar och tvättar bakom oss",
     ],
     faq: [
       { q: "Hur lång tid tar en rekonditionering?", a: "En komplett rekond tar vanligtvis 4–8 timmar beroende på bilens storlek och skick. Vi bokar in bilen för hela dagen." },

@@ -32,12 +32,12 @@ export default async function TjanstPage({ params }: Props) {
       <section className="pt-40 pb-20 px-8 bg-surface-1 border-b border-gold/10">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
-            <Link href="/tjanster" className="inline-flex items-center gap-2 text-gold/60 text-xs tracking-widest uppercase font-mono mb-8 hover:text-gold transition-colors">
+            <Link href="/tjanster" className="inline-flex items-center gap-2 text-gold/60 text-xs tracking-widest uppercase font-mono mb-10 hover:text-gold transition-colors">
               ← Alla tjänster
             </Link>
-            <p className="text-gold text-xs tracking-[0.4em] uppercase mb-4 font-mono">{t.num} — KOM-FORT Bilvård AB</p>
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-6">{t.hero}</h1>
-            <p className="text-white/60 text-xl max-w-2xl leading-relaxed">{t.intro}</p>
+            <p className="text-gold text-xs tracking-[0.4em] uppercase mb-5 font-mono">{t.num} — KOM-FORT Bilvård AB · Örebro</p>
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-6">{t.hero}</h1>
+            <p className="text-white/50 text-lg max-w-2xl leading-relaxed font-light">{t.intro}</p>
           </FadeIn>
         </div>
       </section>
@@ -47,7 +47,7 @@ export default async function TjanstPage({ params }: Props) {
         <div className="max-w-6xl mx-auto">
           <FadeIn>
             <p className="text-gold text-xs tracking-[0.4em] uppercase mb-4 font-mono">— Vad ingår</p>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-12">Vad ingår i {t.title}?</h2>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tighter mb-12">Vad ingår i {t.title}?</h2>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gold/10">
             {t.included.map((item, i) => (
@@ -74,7 +74,7 @@ export default async function TjanstPage({ params }: Props) {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <FadeIn>
             <p className="text-gold text-xs tracking-[0.4em] uppercase mb-4 font-mono">— Varför oss</p>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-8">Varför välja KOM-FORT?</h2>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tighter mb-8">Varför välja KOM-FORT?</h2>
             <ul className="flex flex-col gap-4">
               {t.why.map((w, i) => (
                 <li key={i} className="flex items-start gap-3 text-white/70">
@@ -107,7 +107,7 @@ export default async function TjanstPage({ params }: Props) {
         <div className="max-w-3xl mx-auto">
           <FadeIn>
             <p className="text-gold text-xs tracking-[0.4em] uppercase mb-4 font-mono">— Vanliga frågor</p>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-12">Frågor & Svar</h2>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tighter mb-12">Frågor & Svar</h2>
           </FadeIn>
           <div className="flex flex-col gap-px bg-gold/10">
             {t.faq.map((item, i) => (
