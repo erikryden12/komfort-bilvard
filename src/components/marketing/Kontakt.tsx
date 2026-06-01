@@ -139,7 +139,7 @@ export default function Kontakt() {
                 <button
                   type="submit"
                   disabled={pending}
-                  className="bg-gold text-black px-8 py-4 font-bold tracking-widest uppercase text-sm hover:bg-gold-dim transition-all disabled:opacity-50"
+                  className="bg-gold text-black px-8 py-4 font-bold tracking-widest uppercase text-sm hover:bg-gold-dim transition-all disabled:opacity-50 rounded-lg"
                 >
                   {pending ? "Skickar..." : "Skicka förfrågan →"}
                 </button>

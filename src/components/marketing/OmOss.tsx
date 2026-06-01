@@ -25,7 +25,7 @@ export default function OmOss() {
           </p>
           <a
             href="#kontakt"
-            className="bg-gold text-black px-8 py-4 font-bold tracking-widest uppercase text-sm hover:bg-gold-dim transition-all inline-block"
+            className="bg-gold text-black px-8 py-4 font-bold tracking-widest uppercase text-sm hover:bg-gold-dim transition-all inline-block rounded-lg"
           >
             Kontakta oss
           </a>
