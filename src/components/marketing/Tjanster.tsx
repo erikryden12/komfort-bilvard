@@ -8,7 +8,7 @@ export default function Tjanster() {
       <div className="max-w-6xl mx-auto">
         <FadeIn>
           <p className="text-gold text-xs tracking-[0.4em] uppercase mb-4 font-mono">— Vad vi erbjuder</p>
-          <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-16">VÅRA TJÄNSTER</h2>
+          <h2 className="font-[family-name:var(--font-bebas)] text-6xl md:text-8xl tracking-wide mb-16">VÅRA TJÄNSTER</h2>
         </FadeIn>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gold/10">
           {tjanster.map((s, i) => (

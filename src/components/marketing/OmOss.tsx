@@ -13,7 +13,7 @@ export default function OmOss() {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         <FadeIn>
           <p className="text-gold text-xs tracking-[0.4em] uppercase mb-4 font-mono">— Om oss</p>
-          <h2 className="text-5xl md:text-6xl font-black tracking-tighter mb-8">
+          <h2 className="font-[family-name:var(--font-bebas)] text-6xl md:text-7xl tracking-wide mb-8">
             PASSION FÖR<br />
             <span className="text-gold">BILAR.</span>
           </h2>
@@ -25,7 +25,7 @@ export default function OmOss() {
           </p>
           <a
             href="#kontakt"
-            className="bg-gold text-black px-8 py-4 font-bold tracking-widest uppercase text-sm hover:bg-gold-dim transition-all inline-block rounded-lg"
+            className="relative overflow-hidden bg-gold text-black px-8 py-3 font-bold tracking-widest uppercase text-sm inline-block rounded-lg transition-all after:absolute after:inset-0 after:bg-white/20 after:translate-x-[-100%] hover:after:translate-x-0 after:transition-transform after:duration-300"
           >
             Kontakta oss
           </a>

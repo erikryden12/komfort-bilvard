@@ -37,7 +37,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <a
             href="tel:0761943519"
-            className="hidden md:block bg-gold text-black px-5 py-2 text-sm font-bold tracking-widest uppercase hover:bg-gold-dim transition-colors rounded-lg"
+            className="relative overflow-hidden hidden md:block bg-gold text-black px-8 py-3 text-sm font-bold tracking-widest uppercase rounded-lg transition-all after:absolute after:inset-0 after:bg-white/20 after:translate-x-[-100%] hover:after:translate-x-0 after:transition-transform after:duration-300"
           >
             Boka nu
           </a>
@@ -61,7 +61,7 @@ export default function Navbar() {
           <a href="/kontakt" onClick={() => setOpen(false)} className="text-white/70 tracking-widest uppercase text-sm hover:text-gold transition-colors">Kontakt</a>
           <a
             href="tel:0761943519"
-            className="bg-gold text-black px-6 py-3 font-bold tracking-widest uppercase text-sm text-center hover:bg-gold-dim transition-colors rounded-lg"
+            className="relative overflow-hidden bg-gold text-black px-8 py-3 font-bold tracking-widest uppercase text-sm text-center rounded-lg transition-all after:absolute after:inset-0 after:bg-white/20 after:translate-x-[-100%] hover:after:translate-x-0 after:transition-transform after:duration-300"
           >
             Ring – 076-194 35 19
           </a>

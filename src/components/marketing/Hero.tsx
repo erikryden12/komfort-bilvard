@@ -23,35 +23,36 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center overflow-hidden">
 
       <div className={`absolute inset-0 transition-opacity duration-[2000ms] ease-in-out ${showAfter ? "opacity-0" : "opacity-100"}`}>
-        <Image src={pairs[currentPair].before} alt="Före" fill className="object-cover" priority />
-        <div className="absolute inset-0 bg-black/60" />
+        <Image src={pairs[currentPair].before} alt="Före" fill className="object-cover object-[-50%_45%]" priority />
       </div>
 
       <div className={`absolute inset-0 transition-opacity duration-[2000ms] ease-in-out ${showAfter ? "opacity-100" : "opacity-0"}`}>
-        <Image src={pairs[currentPair].after} alt="Efter" fill className="object-cover" priority />
-        <div className="absolute inset-0 bg-black/50" />
+        <Image src={pairs[currentPair].after} alt="Efter" fill className="object-cover object-[-100%_55%]" priority />
       </div>
 
-      <div className="relative z-10 text-center px-8">
-        <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-none">
-          Din bilvård i Örebro.
+      {/* Cinematic gradient — dark left for text legibility, no bottom darkening */}
+      <div className={`absolute inset-0 transition-opacity duration-[2000ms] ${showAfter ? "opacity-60" : "opacity-100"} bg-gradient-to-r from-black/80 via-black/40 to-transparent`} />
+
+      <div className="relative z-10 px-8 md:px-20 max-w-3xl">
+        <h1 className="font-[family-name:var(--font-bebas)] text-7xl md:text-9xl tracking-wide mb-8 leading-none text-left">
+          Din bilvård<br />i Örebro.
         </h1>
-        <p className="text-white/80 text-xl max-w-lg mx-auto mb-12 leading-relaxed font-light">
+        <p className="text-white/60 text-lg max-w-md mb-14 leading-relaxed font-light text-left">
           Vi på Kom-Fort Bilvård förvandlar din bil. Med bilrekond, polering och lackskydd i Örebro.
         </p>
-        <div className="flex gap-4 justify-center flex-wrap">
+        <div className="flex gap-4 flex-wrap">
           <a
             href="tel:0761943519"
-            className="bg-gold text-black px-8 py-4 font-bold tracking-widest uppercase text-sm hover:bg-gold-dim transition-all hover:-translate-y-1 rounded-lg"
+            className="relative overflow-hidden bg-gold text-black px-10 py-3 font-bold tracking-widest uppercase text-sm rounded-lg transition-all after:absolute after:inset-0 after:bg-white/20 after:translate-x-[-100%] hover:after:translate-x-0 after:transition-transform after:duration-300"
           >
             Ring oss!
           </a>
           <a
-            href="#tjanster"
-            className="border border-white/20 text-white/70 px-8 py-4 tracking-widest uppercase text-sm hover:border-gold hover:text-gold transition-all rounded-lg"
+            href="/tjanster"
+            className="relative overflow-hidden border border-white/20 text-white/70 px-10 py-3 tracking-widest uppercase text-sm rounded-lg transition-all hover:border-gold hover:text-gold after:absolute after:inset-0 after:bg-gold/10 after:translate-x-[-100%] hover:after:translate-x-0 after:transition-transform after:duration-300"
           >
             Våra tjänster
           </a>

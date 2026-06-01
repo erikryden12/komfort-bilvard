@@ -51,7 +51,7 @@ export default function TjansterPage() {
             </div>
             <a
               href="tel:0761943519"
-              className="shrink-0 bg-gold text-black px-8 py-4 font-bold tracking-widest uppercase text-sm hover:bg-gold-dim transition-all hover:-translate-y-1"
+              className="relative overflow-hidden shrink-0 bg-gold text-black px-8 py-3 font-bold tracking-widest uppercase text-sm rounded-lg transition-all after:absolute after:inset-0 after:bg-white/20 after:translate-x-[-100%] hover:after:translate-x-0 after:transition-transform after:duration-300"
             >
               Ring – 076-194 35 19
             </a>

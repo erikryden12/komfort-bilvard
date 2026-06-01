@@ -49,7 +49,7 @@ export default function Kontakt() {
         {/* Header */}
         <FadeIn>
           <p className="text-gold text-xs tracking-[0.4em] uppercase mb-4 font-mono">— Kontakta oss</p>
-          <h2 className="text-5xl md:text-6xl font-black tracking-tighter mb-12">
+          <h2 className="font-[family-name:var(--font-bebas)] text-6xl md:text-7xl tracking-wide mb-12">
             BOKA DIN<br />TID IDAG.
           </h2>
         </FadeIn>
@@ -139,7 +139,7 @@ export default function Kontakt() {
                 <button
                   type="submit"
                   disabled={pending}
-                  className="bg-gold text-black px-8 py-4 font-bold tracking-widest uppercase text-sm hover:bg-gold-dim transition-all disabled:opacity-50 rounded-lg"
+                  className="relative overflow-hidden bg-gold text-black px-8 py-3 font-bold tracking-widest uppercase text-sm rounded-lg transition-all disabled:opacity-50 after:absolute after:inset-0 after:bg-white/20 after:translate-x-[-100%] hover:after:translate-x-0 after:transition-transform after:duration-300"
                 >
                   {pending ? "Skickar..." : "Skicka förfrågan →"}
                 </button>
