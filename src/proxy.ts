@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const PORTAL_PATHS = ["/dashboard", "/bokningar", "/installningar", "/profil"];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isPortalPath = PORTAL_PATHS.some((p) => pathname.startsWith(p));
 
