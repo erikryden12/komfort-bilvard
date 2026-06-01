@@ -1,24 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-surface-1/90 backdrop-blur-md border-b border-gold/10">
-      <div className="flex justify-between items-center px-6 py-3">
-        <Link href="/" className="flex items-center">
-          <Image
-            src="/logo/kom-fort logga.svg"
-            alt="Kom-Fort Bilvård"
-            width={90}
-            height={28}
-            priority
-          />
-        </Link>
+      <div className="flex justify-between items-center px-8 py-5">
+        <div className="flex items-center gap-3">
+          <span className="text-gold font-bold text-xl tracking-widest">KOM-FORT</span>
+          <span className="text-white/30 text-sm">Bilvård AB</span>
+        </div>
 
         <ul className="hidden md:flex gap-8 text-sm text-white/60 tracking-widest uppercase">
           <li><a href="/#tjanster" className="hover:text-gold transition-colors">Tjänster</a></li>
