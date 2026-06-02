@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 const pairs = [
@@ -8,37 +8,61 @@ const pairs = [
   { before: "/images/IMG_0866.jpg", after: "/images/IMG_0867.jpg", beforePos: "50% 55%", afterPos: "50% 55%" },
 ];
 
-function AnimatedHeroText() {
-  const lines = ["Din bilvård", "i Örebro."];
+function HeroLine({ text, delay }: { text: string; delay: number }) {
+  const textRef = useRef<SVGTextElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    const textEl = textRef.current;
+    const svgEl = svgRef.current;
+    if (!textEl || !svgEl) return;
+
+    const bbox = textEl.getBBox();
+    svgEl.setAttribute("viewBox", `${bbox.x - 2} ${bbox.y - 12} ${bbox.width + 4} ${bbox.height + 16}`);
+
+    const len = textEl.getComputedTextLength();
+    textEl.style.strokeDasharray = String(len + 20);
+    textEl.style.strokeDashoffset = String(len + 20);
+    textEl.style.animationDelay = `${delay}s`;
+    textEl.classList.add("hero-text-animate");
+  }, [delay]);
 
   return (
-    <div className="mb-8 leading-none text-left" aria-label="Din bilvård i Örebro.">
-      {lines.map((line, i) => (
-        <div key={line} className="block">
-          <svg
-            width="100%"
-            height="auto"
-            viewBox={`0 0 ${line.length * 58} 110`}
-            preserveAspectRatio="xMinYMid meet"
-            overflow="visible"
-            aria-hidden="true"
-          >
-            <text
-              x="0"
-              y="95"
-              fontSize="110"
-              fontFamily="var(--font-bebas), sans-serif"
-              letterSpacing="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="hero-text-animate"
-              style={{ animationDelay: `${i * 0.6}s` }}
-            >
-              {line}
-            </text>
-          </svg>
-        </div>
-      ))}
+    <div className="block">
+      <svg
+        ref={svgRef}
+        width="100%"
+        height="auto"
+        viewBox="0 0 640 165"
+        preserveAspectRatio="xMinYMid meet"
+        overflow="visible"
+        aria-hidden="true"
+      >
+        <text
+          ref={textRef}
+          x="0"
+          y="132"
+          fontSize="150"
+          fontFamily="var(--font-bebas), sans-serif"
+          letterSpacing="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ fill: "transparent" }}
+        >
+          {text}
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+function AnimatedHeroText() {
+  return (
+    <div className="mb-4 leading-none text-left" aria-label="Din bilvård i Örebro.">
+      <HeroLine text="Din bilvård" delay={0} />
+      <div style={{ marginTop: "-0.32em" }}>
+        <HeroLine text="i Örebro." delay={0.65} />
+      </div>
     </div>
   );
 }
@@ -73,7 +97,7 @@ export default function Hero() {
 
       <div className="relative z-10 px-8 md:px-20 max-w-3xl">
         <AnimatedHeroText />
-        <p className="text-white/60 text-lg max-w-md mb-14 leading-relaxed font-light text-left">
+        <p className="text-white/60 text-lg max-w-md mb-6 leading-relaxed font-light text-left">
           Vi på Kom-Fort Bilvård förvandlar din bil. Med bilrekond, polering och lackskydd i Örebro.
         </p>
         <div className="flex gap-4 flex-wrap">
