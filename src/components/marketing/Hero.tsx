@@ -4,9 +4,44 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const pairs = [
-  { before: "/images/IMG_0858.jpg", after: "/images/IMG_0859.jpg" },
-  { before: "/images/IMG_0866.jpg", after: "/images/IMG_0867.jpg" },
+  { before: "/images/IMG_0858.jpg", after: "/images/IMG_0859.jpg", beforePos: "45% 15%", afterPos: "60% 35%" },
+  { before: "/images/IMG_0866.jpg", after: "/images/IMG_0867.jpg", beforePos: "50% 55%", afterPos: "50% 55%" },
 ];
+
+function AnimatedHeroText() {
+  const lines = ["Din bilvård", "i Örebro."];
+
+  return (
+    <div className="mb-8 leading-none text-left" aria-label="Din bilvård i Örebro.">
+      {lines.map((line, i) => (
+        <div key={line} className="block">
+          <svg
+            width="100%"
+            height="auto"
+            viewBox={`0 0 ${line.length * 58} 110`}
+            preserveAspectRatio="xMinYMid meet"
+            overflow="visible"
+            aria-hidden="true"
+          >
+            <text
+              x="0"
+              y="95"
+              fontSize="110"
+              fontFamily="var(--font-bebas), sans-serif"
+              letterSpacing="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="hero-text-animate"
+              style={{ animationDelay: `${i * 0.6}s` }}
+            >
+              {line}
+            </text>
+          </svg>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function Hero() {
   const [showAfter, setShowAfter] = useState(false);
@@ -18,7 +53,7 @@ export default function Hero() {
         if (prev) setCurrentPair((p) => (p + 1) % pairs.length);
         return !prev;
       });
-    }, 3000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -37,9 +72,7 @@ export default function Hero() {
       <div className={`absolute inset-0 transition-opacity duration-[2000ms] ${showAfter ? "opacity-60" : "opacity-100"} bg-gradient-to-r from-black/80 via-black/40 to-transparent`} />
 
       <div className="relative z-10 px-8 md:px-20 max-w-3xl">
-        <h1 className="font-[family-name:var(--font-bebas)] text-7xl md:text-9xl tracking-wide mb-8 leading-none text-left">
-          Din bilvård<br />i Örebro.
-        </h1>
+        <AnimatedHeroText />
         <p className="text-white/60 text-lg max-w-md mb-14 leading-relaxed font-light text-left">
           Vi på Kom-Fort Bilvård förvandlar din bil. Med bilrekond, polering och lackskydd i Örebro.
         </p>
