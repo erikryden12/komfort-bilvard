@@ -8,6 +8,14 @@ const pairs = [
   { before: "/images/IMG_0866.jpg", after: "/images/IMG_0867.jpg", beforePos: "50% 55%", afterPos: "50% 55%" },
 ];
 
+// Fixed glyph box so every line renders at the SAME font size.
+// The SVG width tracks the text's natural width (set after measuring),
+// so short lines no longer get scaled up to fill the column.
+const FONT_SIZE = 150;
+const BASELINE = 122;
+const BOX_TOP = -16; // padding above caps for accents (Å, Ö)
+const BOX_HEIGHT = FONT_SIZE + 8;
+
 function HeroLine({ text, delay }: { text: string; delay: number }) {
   const textRef = useRef<SVGTextElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -17,10 +25,14 @@ function HeroLine({ text, delay }: { text: string; delay: number }) {
     const svgEl = svgRef.current;
     if (!textEl || !svgEl) return;
 
-    const bbox = textEl.getBBox();
-    svgEl.setAttribute("viewBox", `${bbox.x - 2} ${bbox.y - 12} ${bbox.width + 4} ${bbox.height + 16}`);
-
     const len = textEl.getComputedTextLength();
+    const width = Math.ceil(len + 4);
+
+    // viewBox keeps a constant height (== font size) across lines so scale is
+    // identical; width hugs the text and the SVG inherits that aspect ratio.
+    svgEl.setAttribute("viewBox", `0 ${BOX_TOP} ${width} ${BOX_HEIGHT}`);
+    svgEl.style.width = `${(width / BOX_HEIGHT).toFixed(3)}em`;
+
     textEl.style.strokeDasharray = String(len + 20);
     textEl.style.strokeDashoffset = String(len + 20);
     textEl.style.animationDelay = `${delay}s`;
@@ -28,41 +40,40 @@ function HeroLine({ text, delay }: { text: string; delay: number }) {
   }, [delay]);
 
   return (
-    <div className="block">
-      <svg
-        ref={svgRef}
-        width="100%"
-        height="auto"
-        viewBox="0 0 640 165"
-        preserveAspectRatio="xMinYMid meet"
-        overflow="visible"
-        aria-hidden="true"
+    <svg
+      ref={svgRef}
+      height="1em"
+      style={{ fontSize: "clamp(62px, 13.2vw, 142px)", overflow: "visible", display: "block" }}
+      viewBox={`0 ${BOX_TOP} 640 ${BOX_HEIGHT}`}
+      preserveAspectRatio="xMinYMid meet"
+      aria-hidden="true"
+    >
+      <text
+        ref={textRef}
+        x="0"
+        y={BASELINE}
+        fontSize={FONT_SIZE}
+        fontFamily="var(--font-bebas), sans-serif"
+        letterSpacing="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ fill: "transparent" }}
       >
-        <text
-          ref={textRef}
-          x="0"
-          y="132"
-          fontSize="150"
-          fontFamily="var(--font-bebas), sans-serif"
-          letterSpacing="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ fill: "transparent" }}
-        >
-          {text}
-        </text>
-      </svg>
-    </div>
+        {text}
+      </text>
+    </svg>
   );
 }
 
 function AnimatedHeroText() {
   return (
-    <div className="mb-4 leading-none text-left" aria-label="Din bilvård i Örebro.">
+    <div
+      className="mb-5 text-left"
+      aria-label="Din bilvård i Örebro."
+      style={{ display: "flex", flexDirection: "column", gap: "0.02em" }}
+    >
       <HeroLine text="Din bilvård" delay={0} />
-      <div style={{ marginTop: "-0.32em" }}>
-        <HeroLine text="i Örebro." delay={0.65} />
-      </div>
+      <HeroLine text="i Örebro." delay={0.65} />
     </div>
   );
 }
@@ -97,7 +108,7 @@ export default function Hero() {
 
       <div className="relative z-10 px-8 md:px-20 max-w-3xl">
         <AnimatedHeroText />
-        <p className="text-white/60 text-lg max-w-md mb-6 leading-relaxed font-light text-left">
+        <p className="text-white/60 text-lg max-w-md mb-7 leading-snug font-light text-left">
           Vi på Kom-Fort Bilvård förvandlar din bil. Med bilrekond, polering och lackskydd i Örebro.
         </p>
         <div className="flex gap-4 flex-wrap">
@@ -109,7 +120,7 @@ export default function Hero() {
           </a>
           <a
             href="/tjanster"
-            className="relative overflow-hidden border border-white/20 text-white/70 px-10 py-3 tracking-widest uppercase text-sm rounded-lg transition-all hover:border-gold hover:text-gold after:absolute after:inset-0 after:bg-gold/10 after:translate-x-[-100%] hover:after:translate-x-0 after:transition-transform after:duration-300"
+            className="relative overflow-hidden border border-white/20 text-white/80 px-10 py-3 font-bold tracking-widest uppercase text-sm rounded-lg transition-all hover:border-gold hover:text-gold after:absolute after:inset-0 after:bg-gold/10 after:translate-x-[-100%] hover:after:translate-x-0 after:transition-transform after:duration-300"
           >
             Våra tjänster
           </a>
