@@ -24,7 +24,7 @@ export default function OmOss() {
             Vi finns på Lindtorpsvägen 10 i södra Örebro, nära E20 avfart 110 Adolfsberg.
           </p>
           <a
-            href="#kontakt"
+            href="/kontakt"
             className="relative overflow-hidden bg-gold text-black px-8 py-3 font-bold tracking-widest uppercase text-sm inline-block rounded-lg transition-all after:absolute after:inset-0 after:bg-white/20 after:translate-x-[-100%] hover:after:translate-x-0 after:transition-transform after:duration-300"
           >
             Kontakta oss
