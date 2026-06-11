@@ -104,7 +104,6 @@ export default function Footer() {
               Lindtorpsvägen 10<br />
               702 37 Örebro
             </li>
-            <li className="text-white/30">Alltid öppet</li>
           </ul>
         </div>
 
