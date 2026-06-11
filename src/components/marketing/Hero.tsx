@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 const pairs = [
-  { before: "/images/IMG_0858.jpg", after: "/images/IMG_0859.jpg", beforePos: "45% 15%", afterPos: "60% 35%" },
-  { before: "/images/IMG_0866.jpg", after: "/images/IMG_0867.jpg", beforePos: "50% 55%", afterPos: "50% 55%" },
+  { before: "/images/IMG_0858.jpg", after: "/images/IMG_0859.jpg", beforePos: "50% 50%", afterPos: "50% 50%" },
+  { before: "/images/IMG_0866.jpg", after: "/images/IMG_0867.jpg", beforePos: "50% 70%", afterPos: "50% 70%" },
 ];
 
 // Fixed glyph box so every line renders at the SAME font size.
@@ -79,32 +79,89 @@ function AnimatedHeroText() {
 }
 
 export default function Hero() {
-  const [showAfter, setShowAfter] = useState(false);
+  const [phase, setPhase] = useState<"before" | "after">("before");
   const [currentPair, setCurrentPair] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setShowAfter((prev) => {
-        if (prev) setCurrentPair((p) => (p + 1) % pairs.length);
-        return !prev;
-      });
-    }, 5000);
+      setTransitioning(true);
+      setTimeout(() => {
+        setPhase((prev) => {
+          if (prev === "after") setCurrentPair((p) => (p + 1) % pairs.length);
+          return prev === "before" ? "after" : "before";
+        });
+        setTransitioning(false);
+      }, 1500);
+    }, 7000);
     return () => clearInterval(interval);
   }, []);
+
+  const showAfter = phase === "after";
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
 
-      <div className={`absolute inset-0 transition-opacity duration-[2000ms] ease-in-out ${showAfter ? "opacity-0" : "opacity-100"}`}>
-        <Image src={pairs[currentPair].before} alt="Före" fill className="object-cover object-[-50%_45%]" priority />
+      {/* Before image — Ken Burns: alltid zoom in (1.08 → 1) */}
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity: showAfter ? 0 : 1,
+          transition: "opacity 1800ms cubic-bezier(0.4,0,0.2,1)",
+        }}
+      >
+        <Image
+          src={pairs[currentPair].before}
+          alt="Före"
+          fill
+          className="object-cover"
+          style={{
+            objectPosition: pairs[currentPair].beforePos,
+            transform: showAfter ? "scale(1.04)" : "scale(1)",
+            transition: "transform 8000ms ease-in-out",
+          }}
+          priority
+        />
       </div>
 
-      <div className={`absolute inset-0 transition-opacity duration-[2000ms] ease-in-out ${showAfter ? "opacity-100" : "opacity-0"}`}>
-        <Image src={pairs[currentPair].after} alt="Efter" fill className="object-cover object-[-100%_55%]" priority />
+      {/* After image */}
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity: showAfter ? 1 : 0,
+          transition: "opacity 1800ms cubic-bezier(0.4,0,0.2,1)",
+        }}
+      >
+        <Image
+          src={pairs[currentPair].after}
+          alt="Efter"
+          fill
+          className="object-cover"
+          style={{
+            objectPosition: pairs[currentPair].afterPos,
+            transform: showAfter ? "scale(1)" : "scale(1.04)",
+            transition: "transform 8000ms ease-in-out",
+          }}
+          priority
+        />
       </div>
 
-      {/* Cinematic gradient — dark left for text legibility, no bottom darkening */}
-      <div className={`absolute inset-0 transition-opacity duration-[2000ms] ${showAfter ? "opacity-60" : "opacity-100"} bg-gradient-to-r from-black/80 via-black/40 to-transparent`} />
+      {/* Overlay — mjuk vignette + gradient vänster för text */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+      {/* Före/Efter-badge */}
+      <div
+        className="absolute top-28 right-8 md:right-16 z-10"
+        style={{
+          opacity: transitioning ? 0 : 1,
+          transition: "opacity 600ms ease",
+        }}
+      >
+        <span className={`text-[10px] font-mono tracking-[0.3em] uppercase px-3 py-1.5 border ${showAfter ? "border-gold/50 text-gold bg-gold/10" : "border-white/20 text-white/50 bg-black/30"}`}>
+          {showAfter ? "Efter" : "Före"}
+        </span>
+      </div>
 
       <div className="relative z-10 px-8 md:px-20 max-w-3xl">
         <AnimatedHeroText />

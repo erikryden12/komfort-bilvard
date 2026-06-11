@@ -2,7 +2,7 @@ import { FadeIn } from "@/components/ui/FadeIn";
 
 const stats = [
   { num: "100%", label: "Handtvätt" },
-  { num: "5★", label: "Kundnöjdhet" },
+  { num: "100%", label: "Skräddarsytt" },
   { num: "Örebro", label: "Södra Lindhult" },
   { num: "Alltid", label: "Öppet" },
 ];
