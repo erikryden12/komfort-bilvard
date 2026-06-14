@@ -2,18 +2,26 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { Particles } from "@/components/ui/Particles";
 
-const pairs = [
-  { before: "/images/IMG_0858.jpg", after: "/images/IMG_0859.jpg", beforePos: "50% 50%", afterPos: "50% 50%" },
-  { before: "/images/IMG_0866.jpg", after: "/images/IMG_0867.jpg", beforePos: "50% 70%", afterPos: "50% 70%" },
+type Slide = {
+  src: string;
+  label: "Före" | "Efter";
+  pos: string;
+  scale: number;
+  kenBurns: boolean;
+};
+
+const slides: Slide[] = [
+  { src: "/bilder/1.png", label: "Före", pos: "50% 50%", scale: 1,    kenBurns: false },
+  { src: "/bilder/2.png", label: "Efter", pos: "50% 50%", scale: 1.12, kenBurns: false },
+  { src: "/bilder/3.png", label: "Före", pos: "50% 50%", scale: 1,    kenBurns: false },
+  { src: "/bilder/4.png", label: "Efter", pos: "50% 50%", scale: 1.08, kenBurns: false },
 ];
 
-// Fixed glyph box so every line renders at the SAME font size.
-// The SVG width tracks the text's natural width (set after measuring),
-// so short lines no longer get scaled up to fill the column.
 const FONT_SIZE = 150;
 const BASELINE = 122;
-const BOX_TOP = -16; // padding above caps for accents (Å, Ö)
+const BOX_TOP = -16;
 const BOX_HEIGHT = FONT_SIZE + 8;
 
 function HeroLine({ text, delay }: { text: string; delay: number }) {
@@ -28,8 +36,6 @@ function HeroLine({ text, delay }: { text: string; delay: number }) {
     const len = textEl.getComputedTextLength();
     const width = Math.ceil(len + 4);
 
-    // viewBox keeps a constant height (== font size) across lines so scale is
-    // identical; width hugs the text and the SVG inherits that aspect ratio.
     svgEl.setAttribute("viewBox", `0 ${BOX_TOP} ${width} ${BOX_HEIGHT}`);
     svgEl.style.width = `${(width / BOX_HEIGHT).toFixed(3)}em`;
 
@@ -79,91 +85,109 @@ function AnimatedHeroText() {
 }
 
 export default function Hero() {
-  const [phase, setPhase] = useState<"before" | "after">("before");
-  const [currentPair, setCurrentPair] = useState(0);
-  const [transitioning, setTransitioning] = useState(false);
+  const [active, setActive] = useState(0);
+  const [prev, setPrev] = useState<number | null>(null);
+  const [badgeIndex, setBadgeIndex] = useState(0);
+  const [badgeHidden, setBadgeHidden] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTransitioning(true);
-      setTimeout(() => {
-        setPhase((prev) => {
-          if (prev === "after") setCurrentPair((p) => (p + 1) % pairs.length);
-          return prev === "before" ? "after" : "before";
-        });
-        setTransitioning(false);
-      }, 1500);
-    }, 7000);
+      setBadgeHidden(true);
+      setActive((cur) => {
+        setPrev(cur);
+        return (cur + 1) % slides.length;
+      });
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  const showAfter = phase === "after";
+  useEffect(() => {
+    if (active === badgeIndex) return;
+    const t = setTimeout(() => {
+      setBadgeIndex(active);
+      setBadgeHidden(false);
+    }, 900);
+    return () => clearTimeout(t);
+  }, [active, badgeIndex]);
+
+  const badgeLabel = slides[badgeIndex].label;
+
+  // Scenbyten (2→3 och 4→1) dippar genom svart.
+  // Parbyten (1→2 och 3→4) crossfadar direkt.
+  const isSceneCut = prev !== null && (
+    (prev === 1 && active === 2) || (prev === 3 && active === 0)
+  );
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-black">
 
-      {/* Before image — Ken Burns: alltid zoom in (1.08 → 1) */}
-      <div
-        className="absolute inset-0"
-        style={{
-          opacity: showAfter ? 0 : 1,
-          transition: "opacity 1800ms cubic-bezier(0.4,0,0.2,1)",
-        }}
-      >
-        <Image
-          src={pairs[currentPair].before}
-          alt="Före"
-          fill
-          className="object-cover"
-          style={{
-            objectPosition: pairs[currentPair].beforePos,
-            transform: showAfter ? "scale(1.04)" : "scale(1)",
-            transition: "transform 8000ms ease-in-out",
-          }}
-          priority
-        />
+      {/* Bilderna till höger — bredare än synytan så vänsterkanten kan fadas in i svart */}
+      <div className="absolute inset-y-0 right-0 w-[72%] md:w-[68%]">
+        {slides.map((slide, i) => {
+          const isActive = i === active;
+          const isOut = i === prev && prev !== active;
+          let transition: string;
+          if (isSceneCut) {
+            if (isActive) {
+              transition = "opacity 700ms cubic-bezier(0.4,0,0.2,1) 450ms";
+            } else if (isOut) {
+              transition = "opacity 500ms cubic-bezier(0.4,0,0.2,1)";
+            } else {
+              transition = "none";
+            }
+          } else {
+            transition = "opacity 1200ms cubic-bezier(0.4,0,0.2,1)";
+          }
+
+          return (
+            <div
+              key={slide.src}
+              className="absolute inset-0"
+              aria-hidden={!isActive}
+              style={{ opacity: isActive ? 1 : 0, transition, willChange: "opacity" }}
+            >
+              <Image
+                src={slide.src}
+                alt={slide.label}
+                fill
+                sizes="55vw"
+                className="object-cover object-center"
+                preload={i === 0}
+                loading={i === 0 ? undefined : "eager"}
+              />
+            </div>
+          );
+        })}
+
+        {/* Mjuk fade — helt svart vid vänsterkanten, tonar gradvis ut in i bilden */}
+        <div className="absolute inset-0 pointer-events-none" style={{background: "linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 12%, rgba(0,0,0,0.7) 28%, rgba(0,0,0,0.35) 42%, rgba(0,0,0,0.12) 55%, transparent 70%)"}} />
       </div>
 
-      {/* After image */}
-      <div
-        className="absolute inset-0"
-        style={{
-          opacity: showAfter ? 1 : 0,
-          transition: "opacity 1800ms cubic-bezier(0.4,0,0.2,1)",
-        }}
-      >
-        <Image
-          src={pairs[currentPair].after}
-          alt="Efter"
-          fill
-          className="object-cover"
-          style={{
-            objectPosition: pairs[currentPair].afterPos,
-            transform: showAfter ? "scale(1)" : "scale(1.04)",
-            transition: "transform 8000ms ease-in-out",
-          }}
-          priority
-        />
-      </div>
+      {/* Particles på vänster/svart sida */}
+      <Particles
+        className="absolute inset-y-0 left-0 w-[55%]"
+        quantity={80}
+        color="#C9A84C"
+        size={1.2}
+        staticity={60}
+        ease={60}
+      />
 
-      {/* Overlay — mjuk vignette + gradient vänster för text */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+      {/* Subtil mörkläggning nedtill */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
 
       {/* Före/Efter-badge */}
       <div
         className="absolute top-28 right-8 md:right-16 z-10"
-        style={{
-          opacity: transitioning ? 0 : 1,
-          transition: "opacity 600ms ease",
-        }}
+        style={{ opacity: badgeHidden ? 0 : 1, transition: "opacity 600ms ease" }}
       >
-        <span className={`text-[10px] font-mono tracking-[0.3em] uppercase px-3 py-1.5 border ${showAfter ? "border-gold/50 text-gold bg-gold/10" : "border-white/20 text-white/50 bg-black/30"}`}>
-          {showAfter ? "Efter" : "Före"}
+        <span className={`text-[10px] font-mono tracking-[0.3em] uppercase px-3 py-1.5 border ${badgeLabel === "Efter" ? "border-gold/50 text-gold bg-gold/10" : "border-white/20 text-white/50 bg-black/30"}`}>
+          {badgeLabel}
         </span>
       </div>
 
-      <div className="relative z-10 px-8 md:px-20 max-w-3xl">
+      {/* Text till vänster */}
+      <div className="relative z-10 px-8 md:px-20 max-w-xl">
         <AnimatedHeroText />
         <p className="text-white/60 text-lg max-w-md mb-7 leading-snug font-light text-left">
           Vi på Kom-Fort Bilvård förvandlar din bil. Med bilrekond, polering och lackskydd i Örebro.

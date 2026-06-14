@@ -47,3 +47,20 @@ body {
   stroke-width: 1px;
   animation: heroStrokeDraw 3.6s ease-out forwards;
 }
+
+/* Kontinuerlig Ken Burns — infinite alternate så zoomen aldrig
+   startar om eller snäpper tillbaka vid slide-byten. */
+@keyframes heroKenBurns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.06); }
+}
+
+.hero-kenburns {
+  animation: heroKenBurns 22s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-kenburns {
+    animation: none;
+  }
+}
